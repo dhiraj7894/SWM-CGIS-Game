@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private Text scoreText;
     float score, escore, wscore, dscore, snscore;
-    public GameObject snw, ew, dw, ww;
+    List<int> IDs = new List<int>();
     // Start is called before the first frame update
     void Start()
     {
@@ -16,34 +16,29 @@ public class GameManager : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        scoreText.text = escore.ToString();
-        if (E_Waste._locked && WetWaste._locked && dryWaste._locked && SanNHazWaste._locked)
+        
+        scoreText.text = score.ToString();
+        if (E_Waste.locked && WetWaste.locked && dryWaste.locked && SanNHazWaste.locked)
         {
             score = escore + wscore + dscore + snscore;
             scoreText.text = "Score is : " + score.ToString();
         }
-
-        
     }
-    public void E_WasteScore(float score)
+    public void E_WasteScore(float score, int iD)
     {
+        IDs.Add(iD);
         escore = score;
-        Debug.Log("E-Waste : " + escore);
     }
-    public void WWasteScore(float score)
-    {
+    public void WWasteScore(float score, int iD)
+    {        
         wscore = score;
-        Debug.Log("W-Waste : " + wscore);
     }
-    public void DWasteScore(float score)
-    {
+    public void DWasteScore(float score, int iD)
+    { 
         dscore = score;
-        Debug.Log("D-Waste : " + dscore);
     }
-    public void SNWasteScore(float score)
+    public void SNWasteScore(float score, int iD)
     {
-        
         snscore = score;
-        Debug.Log("SN-Waste : " + snscore +" "+ dscore + " " + escore + " " + wscore);
     }
 }

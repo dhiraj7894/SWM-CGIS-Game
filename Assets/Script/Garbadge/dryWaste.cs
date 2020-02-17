@@ -4,143 +4,110 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class dryWaste : MonoBehaviour
+public class dryWaste : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
+    [SerializeField] private Canvas canvas;
+    private RectTransform rectTransform;
+    private Vector2 _intialPlace;
+    private CanvasGroup canvasGroup;
     private GameManager gameManager;
     private float scoreData = 0f;
     private float chanceData = 3f;
     public static float score;
-
-
-
-    public Transform _wWastePlace, _eWastePlace, _sHWastePlace, _dWastePlace;
-    private Vector2 _intialPlace;
-    private float _deltaX, _deltaY;
-    public float b;
-    public static bool _locked, _isSelected = false;
+    public static bool locked;
+    public int iD;
 
     public void Awake()
     {
         gameManager = GameObject.FindObjectOfType<GameManager>();
+        rectTransform = GetComponent<RectTransform>();
+        canvasGroup = GetComponent<CanvasGroup>();
+        _intialPlace = rectTransform.anchoredPosition;
+    }
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        //Debug.Log("OnBefinDrag");
+        canvasGroup.alpha = 0.6f;
+        canvasGroup.blocksRaycasts = false;
     }
 
-    void Start()
+    public void OnDrag(PointerEventData eventData)
     {
-        b = 1f;
-        Vector3 mousePosition = Input.mousePosition;
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(mousePosition);
-
-        _intialPlace = transform.position;
+        //Debug.Log("OnDrag");
+        rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
     }
 
-    void Update()
+
+    public void OnEndDrag(PointerEventData eventData)
     {
-        if (_isSelected == true)
+        //Debug.Log("OnEndDrag");
+        canvasGroup.alpha = 1f;
+        canvasGroup.blocksRaycasts = true;
+
+          
+        if(eventData.pointerEnter.name == "DWST")
         {
-            Vector3 mousePos = Input.mousePosition;
-            mousePos = Camera.main.ScreenToWorldPoint(mousePos);
-
-            this.gameObject.transform.position = new Vector3(mousePos.x, mousePos.y, 0);
-        }
-        else if (_isSelected == false)
-        {
-            if (Mathf.Abs(transform.position.x - _dWastePlace.position.x) <= b && Mathf.Abs(transform.position.y - _dWastePlace.position.y) <= b)
+            score = scoreData;
+            if (chanceData == 3)
             {
-                if (_dWastePlace.name == "DWaste")
-                {
-                    transform.position = new Vector2(_dWastePlace.position.x, _dWastePlace.position.y);
-                    _locked = true;
-
-
-                    score = scoreData;
-                    if (chanceData == 3)
-                    {
-                        scoreData = 4;
-                        Destroy(gameObject);
-                        gameManager.DWasteScore(scoreData);
-                        _locked = true;
-                        //Debug.LogWarning(scoreData);
-                    }
-                    if (chanceData == 2)
-                    {
-                        scoreData = 3;
-                        Destroy(gameObject);
-                        gameManager.DWasteScore(scoreData);
-                        _locked = true;
-                       // Debug.LogWarning(scoreData);
-                    }
-                    if (chanceData == 1)
-                    {
-                        scoreData = 2;
-                        Destroy(gameObject);
-                        gameManager.DWasteScore(scoreData);
-                        _locked = true;
-                        //Debug.LogWarning(scoreData);
-                    }
-                    if (chanceData == 0)
-                    {
-                        scoreData = 1;
-                        Destroy(gameObject);
-                        gameManager.DWasteScore(scoreData);
-                        _locked = true;
-                       // Debug.LogWarning(scoreData);
-                    }
-                    if (chanceData < 0)
-                    {
-                        _locked = false;
-                    }
-
-                }
+                scoreData = 4;
+                Destroy(gameObject, 0.1f);
+                gameManager.DWasteScore(scoreData, iD);
+                locked = true;
             }
-            if (Mathf.Abs(transform.position.x - _sHWastePlace.position.x) <= b && Mathf.Abs(transform.position.y - _sHWastePlace.position.y) <= b)
+            if (chanceData == 2)
             {
-                //Debug.Log("SNW");
-                transform.position = new Vector2(_intialPlace.x, _intialPlace.y);
-                if (_sHWastePlace.name == "SNWaste")
-                {
-                    chanceData--;
-                   // Debug.Log("Error" + chanceData);
-                }
+                scoreData = 3;
+                Destroy(gameObject, 0.1f);
+                gameManager.DWasteScore(scoreData, iD);
+                locked = true;
             }
-            if (Mathf.Abs(transform.position.x - _wWastePlace.position.x) <= b && Mathf.Abs(transform.position.y - _wWastePlace.position.y) <= b)
+            if (chanceData == 1)
             {
-                //Debug.Log("WW");
-                transform.position = new Vector2(_intialPlace.x, _intialPlace.y);
-                if (_wWastePlace.name == "WWaste")
-                {
-                    chanceData--;
-                    //Debug.Log("Error" + chanceData);
-                }
+                scoreData = 2;
+                Destroy(gameObject, 0.1f);
+                gameManager.DWasteScore(scoreData, iD);
+                locked = true;
             }
-            if (Mathf.Abs(transform.position.x - _eWastePlace.position.x) <= b && Mathf.Abs(transform.position.y - _eWastePlace.position.y) <= b)
+            if (chanceData == 0)
             {
-                //Debug.Log("EW");
-                transform.position = new Vector2(_intialPlace.x, _intialPlace.y);
-                if (_eWastePlace.name == "EWaste")
-                {
-                    chanceData--;
-                    //Debug.Log("Error" + chanceData);
-                }
+                scoreData = 1;
+                Destroy(gameObject, 0.1f);
+                gameManager.DWasteScore(scoreData, iD);
+                locked = true;
             }
-
-            else
+            if (chanceData < 0)
             {
-                transform.position = new Vector2(_intialPlace.x, _intialPlace.y);
+                locked = false;
             }
         }
-    }
-    private void OnMouseDown()
-    {
-        Debug.Log("OnMouseDown");
-        Vector3 mousePosition = Input.mousePosition;
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(mousePosition);
+        else if(eventData.pointerEnter.name == "EWST")
+        {
+            chanceData--;
+            rectTransform.anchoredPosition = new Vector2(_intialPlace.x, _intialPlace.y);
+            Debug.Log("Error");
+        }
+        else if (eventData.pointerEnter.name == "WWST")
+        {
+            chanceData--;
+            rectTransform.anchoredPosition = new Vector2(_intialPlace.x, _intialPlace.y);
+            Debug.Log("Error");
+        }
+        else if (eventData.pointerEnter.name == "SnHWST")
+        {
+            chanceData--;
+            rectTransform.anchoredPosition = new Vector2(_intialPlace.x, _intialPlace.y);
+            Debug.Log("Error");
+        }
+        else {
+            rectTransform.anchoredPosition = new Vector2(_intialPlace.x, _intialPlace.y);
+        }
 
-        _deltaX = mousePos.x - transform.localPosition.x;
-        _deltaY = mousePos.y - transform.localPosition.y;
-        _isSelected = true;
     }
-    private void OnMouseUp()
+
+    public void OnPointerDown(PointerEventData eventData)
     {
-        _isSelected = false;
+        
+        //Debug.Log("OnPointerDown");
     }
 }
