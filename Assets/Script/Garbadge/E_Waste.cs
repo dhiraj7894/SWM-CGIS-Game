@@ -45,7 +45,13 @@ public class E_Waste : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IE
 
         if(eventData.pointerEnter.name == "EWST")
         {
-            if(chanceData == 3)
+        
+        scoreData = chanceData+1;
+        Debug.Log(iD + " " + scoreData);
+        Destroy(gameObject, 0.1f);
+        gameManager.E_WasteScore(scoreData,iD);
+        locked = true;
+        /*    if(chanceData == 3)
             {
                 scoreData = 4;
                 Debug.Log(iD + " " + scoreData);
@@ -80,15 +86,15 @@ public class E_Waste : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IE
             if (chanceData < 0)
             {
                 locked = false;
-            }
+            }*/
         }
-        else if(eventData.pointerEnter.name == "DWST")
+        else if(eventData.pointerEnter.name == "DWST" || eventData.pointerEnter.name == "WWST" || eventData.pointerEnter.name == "SnHWST")
         {
             chanceData--;
             rectTransform.anchoredPosition = new Vector2(_intialPlace.x, _intialPlace.y);
             Debug.Log("Error");
         }
-        else if (eventData.pointerEnter.name == "WWST")
+        /*else if (eventData.pointerEnter.name == "WWST")
         {
             chanceData--;
             rectTransform.anchoredPosition = new Vector2(_intialPlace.x, _intialPlace.y);
@@ -99,7 +105,7 @@ public class E_Waste : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IE
             chanceData--;
             rectTransform.anchoredPosition = new Vector2(_intialPlace.x, _intialPlace.y);
             Debug.Log("Error");
-        }
+        }*/
         else
         {
             rectTransform.anchoredPosition = new Vector2(_intialPlace.x, _intialPlace.y);
