@@ -56,7 +56,6 @@ public class WetWaste : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         if (eventData.pointerEnter.name == "WWST")
         {
             scoreData = chanceData + 1;
-            FindObjectOfType<GameManager>().saveItem();
             gameManager.E_WasteScore(scoreData, name, cat);
             locked = true;
             Destroy(gameObject, 0.1f);

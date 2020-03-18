@@ -54,9 +54,7 @@ public class E_Waste : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IE
         // set the score adding the chance of player
         // and send the Score, Name of garbadge and Category of garbadge at game Manager
         if(eventData.pointerEnter.name == "EWST")
-        {   scoreData = chanceData + 1;
-            FindObjectOfType<GameManager>().saveItem();
-            
+        {   scoreData = chanceData + 1;                  
             gameManager.E_WasteScore(scoreData, name, cat);
             locked = true;
             Destroy(gameObject, 0.1f);

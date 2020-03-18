@@ -1,0 +1,1 @@
+{"DECategory":"W-Waste","DEobjectName":"UsedFlower","DEobjectScore":4.0}

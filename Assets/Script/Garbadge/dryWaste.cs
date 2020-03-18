@@ -59,7 +59,6 @@ public class dryWaste : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         if (eventData.pointerEnter.name == "DWST")
         {
             scoreData = chanceData + 1;
-            FindObjectOfType<GameManager>().saveItem();
             gameManager.E_WasteScore(scoreData, name, cat);
             locked = true;
             Destroy(gameObject, 0.1f);

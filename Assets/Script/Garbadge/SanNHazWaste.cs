@@ -56,7 +56,6 @@ public class SanNHazWaste : MonoBehaviour, IPointerDownHandler, IBeginDragHandle
         if (eventData.pointerEnter.name == "SnHWST")
         {
             scoreData = chanceData + 1;
-            FindObjectOfType<GameManager>().saveItem();
             gameManager.E_WasteScore(scoreData, name, cat);
             locked = true;
             Destroy(gameObject, 0.1f);
